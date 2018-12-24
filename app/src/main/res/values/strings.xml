@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Animeyou.net</string>
+    <string name="judul">Judul</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="genre">Genre</string>
+    <string name="watch">WATCH</string>
+    <string name="download">DOWNLOAD</string>
+    <string name="data_received">Data Diterima</string>
+    <string name="image_movie">Descripsi gambar</string>
+    <string name="movieTitle">Judul</string>
+    <string name="releaseDate">date</string>
+    <string name="tonton">tonton</string>
+</resources>
