@@ -84,7 +84,10 @@ public class MainActivity extends AppCompatActivity {
                                 animeObject.getString("judul"),
                                 animeObject.getString("gambar"),
                                 animeObject.getString("tanggal"),
-                                animeObject.getString("genre")
+                                animeObject.getString("genre"),
+                                animeObject.getString("video"),
+                                animeObject.getString("video2"),
+                                animeObject.getString("video3")
                         );
                         /*animeItemList.add(animeItem);*/
                         animex.add(animeItem);

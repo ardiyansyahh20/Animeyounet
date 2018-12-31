@@ -108,10 +108,10 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
                 Anime anime = new Anime(getAnimeItem().get(i).getJudul(),
                         getAnimeItem().get(i).getGambar(),
                         getAnimeItem().get(i).getTanggal(),
-                        getAnimeItem().get(i).getGenre()/*,
+                        getAnimeItem().get(i).getGenre(),
                         getAnimeItem().get(i).getVideo(),
                         getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2()*/
+                        getAnimeItem().get(i).getVideo2()
                 );
                 intent.putExtra("detail", anime);
                 context.startActivity(intent);
@@ -129,10 +129,10 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
                 Anime anime = new Anime(getAnimeItem().get(i).getJudul(),
                         getAnimeItem().get(i).getGambar(),
                         getAnimeItem().get(i).getTanggal(),
-                        getAnimeItem().get(i).getGenre()/*,
+                        getAnimeItem().get(i).getGenre(),
                         getAnimeItem().get(i).getVideo(),
                         getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2()*/
+                        getAnimeItem().get(i).getVideo2()
                 );
                 intent.putExtra("detail", anime);
                 context.startActivity(intent);
