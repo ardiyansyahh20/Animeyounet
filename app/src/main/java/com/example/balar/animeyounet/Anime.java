@@ -6,9 +6,10 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 public class Anime implements Parcelable {
-    private String judul, gambar, tanggal, genre, video, video1, video2;
+    private String judul, gambar, tanggal, genre, video, video1, video2, judul_series, gambar_series, url, halaman;
 
-    public Anime(String judul, String gambar, String tanggal, String genre, String video, String video1, String video2){
+    public Anime(String judul, String gambar, String tanggal, String genre, String video, String video1, String video2,
+                 String judul_series, String gambar_series, String url, String halaman){
         this.judul = judul;
         this.gambar = gambar;
         this.tanggal = tanggal;
@@ -16,6 +17,26 @@ public class Anime implements Parcelable {
         this.video = video;
         this.video1 = video1;
         this.video2 = video2;
+        this.judul_series = judul_series;
+        this.gambar_series = gambar_series;
+        this.url = url;
+        this.halaman = halaman;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getHalaman() {
+        return halaman;
+    }
+
+    public void setHalaman(String halaman) {
+        this.halaman = halaman;
     }
 
     public String getVideo() {
@@ -74,6 +95,21 @@ public class Anime implements Parcelable {
         this.genre = genre;
     }
 
+    public String getJudul_series() {
+        return judul_series;
+    }
+
+    public void setJudul_series(String judul_series) {
+        this.judul_series = judul_series;
+    }
+
+    public String getGambar_series() {
+        return gambar_series;
+    }
+
+    public void setGambar_series(String gambar_series) {
+        this.gambar_series = gambar_series;
+    }
 
     @Override
     public int describeContents() {
@@ -89,6 +125,10 @@ public class Anime implements Parcelable {
         dest.writeString(this.video);
         dest.writeString(this.video1);
         dest.writeString(this.video2);
+        dest.writeString(this.judul_series);
+        dest.writeString(this.gambar_series);
+        dest.writeString(this.url);
+        dest.writeString(this.halaman);
     }
 
     protected Anime(Parcel in) {
@@ -99,6 +139,10 @@ public class Anime implements Parcelable {
         this.video = in.readString();
         this.video1 = in.readString();
         this.video2 = in.readString();
+        this.judul_series = in.readString();
+        this.gambar_series = in.readString();
+        this.url = in.readString();
+        this.halaman = in.readString();
     }
 
     public static final Creator<Anime> CREATOR = new Creator<Anime>() {

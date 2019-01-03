@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,8 +100,20 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+
+        final AnimeItem anime = animeItemList.get(i);
+
+        Glide.with(context)
+                .load(getAnimeItem().get(i).getGambar_series())
+                .into(viewHolder.Gambar_series);
+
+        viewHolder.tvJudul_series.setText(getAnimeItem().get(i).getJudul_series());
+
+
         viewHolder.tvJudul.setText(getAnimeItem().get(i).getJudul());
         viewHolder.tvJudul.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
             @Override
@@ -111,7 +125,11 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
                         getAnimeItem().get(i).getGenre(),
                         getAnimeItem().get(i).getVideo(),
                         getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2()
+                        getAnimeItem().get(i).getVideo2(),
+                        getAnimeItem().get(i).getJudul_series(),
+                        getAnimeItem().get(i).getGambar_series(),
+                        getAnimeItem().get(i).getUrl(),
+                        getAnimeItem().get(i).getHalaman()
                 );
                 intent.putExtra("detail", anime);
                 context.startActivity(intent);
@@ -132,9 +150,23 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
                         getAnimeItem().get(i).getGenre(),
                         getAnimeItem().get(i).getVideo(),
                         getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2()
+                        getAnimeItem().get(i).getVideo2(),
+                        getAnimeItem().get(i).getJudul_series(),
+                        getAnimeItem().get(i).getGambar_series(),
+                        getAnimeItem().get(i).getUrl(),
+                        getAnimeItem().get(i).getHalaman()
                 );
                 intent.putExtra("detail", anime);
+                context.startActivity(intent);
+            }
+        }));
+
+        viewHolder.btn_share.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(View view, int position) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, anime.getUrl());
+                intent.setType("text/plain");
                 context.startActivity(intent);
             }
         }));
@@ -160,17 +192,19 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvJudul, tvTanggal;
-        private ImageView imgAnime;
-        /*private Button btnWatch;*/
+        private TextView tvJudul, tvTanggal, tvJudul_series;
+        private ImageView imgAnime, Gambar_series;
+        private ImageButton btn_share;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvJudul = itemView.findViewById(R.id.tvJudul);
             tvTanggal = itemView.findViewById(R.id.tvTanggal);
+            tvJudul_series = itemView.findViewById(R.id.tvJudul_series);
             imgAnime = itemView.findViewById(R.id.Gambar);
-            /*btnWatch = itemView.findViewById(R.id.btn_set_watch);*/
+            Gambar_series = itemView.findViewById(R.id.Gambar_series);
+            btn_share = itemView.findViewById(R.id.btn_share);
         }
     }
 }

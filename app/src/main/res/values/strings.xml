@@ -10,4 +10,9 @@
     <string name="movieTitle">Judul</string>
     <string name="releaseDate">date</string>
     <string name="tonton">tonton</string>
+    <string name="like_follow_media_sosial_resmi_kami_untuk_mendapatkan_informasi_terbaru_anime_subtitle_indonesia"><![CDATA[Like & follow media sosial resmi kami untuk mendapatkan informasi terbaru Anime Subtitle Indonesia]]></string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

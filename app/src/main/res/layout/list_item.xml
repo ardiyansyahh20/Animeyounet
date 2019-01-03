@@ -12,6 +12,67 @@
     android:layout_marginBottom="4dp"
     card_view:cardCornerRadius="8dp">
 
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools">
+        <RelativeLayout
+            android:id="@+id/lnLayoutPost"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/Gambar"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
+            <TextView
+                android:id="@+id/tvJudul"
+                android:layout_toEndOf="@+id/Gambar"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="2dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:maxLines="1"
+
+                android:layout_width="290sp"
+                tools:text="Judul"
+
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/Gambar" />
+            <ImageButton
+                android:id="@+id/more"
+                android:background="@android:color/transparent"
+                android:src=""
+                android:layout_width="30dp"
+                android:scaleType="centerCrop"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photoView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <TextView
+            android:layout_below="@id/Gambar"
+            android:id="@+id/tvTanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableLeft="@drawable/ic_date_range"
+            android:textSize="10sp"
+            android:textColor="#000"
+            tools:text="Tanggal"/>
+    </LinearLayout>-->
+
+
+
     <LinearLayout
         android:id="@+id/cv_film"
         android:layout_width="match_parent"
@@ -19,25 +80,73 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/item_now_play"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:id="@+id/Gambar_series"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
 
             <TextView
+                android:id="@+id/tvJudul_series"
+                android:layout_toEndOf="@+id/Gambar_series"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                tools:text="Judulkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+                android:layout_width="260sp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/Gambar_series" />
+
+
+            <ImageButton
+                android:id="@+id/btn_share"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_more_vert_black"
+                android:layout_width="30dp"
+                android:scaleType="centerCrop"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_below="@id/tvJudul_series"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:id="@+id/Gambar"
+            tools:src="@color/colorAccent"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
                 android:id="@+id/tvJudul"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                tools:text="Judulkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_below="@id/tvJudul"
+                android:id="@+id/tvTanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Judul"
-                android:textColor="#000"/>
-            <ImageView
-                android:layout_below="@id/tvJudul"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:id="@+id/Gambar"
-                tools:src="@color/colorAccent"/>
+                android:drawableStart="@drawable/ic_date_range"
+                android:drawableLeft="@drawable/ic_date_range"
+                android:textSize="10sp"
+                android:textColor="#000"
+                tools:text="Tanggal"/>
+        </RelativeLayout>
+
 
             <!--<TextView
                 android:layout_toRightOf="@id/Gambar"
@@ -54,17 +163,8 @@
                 android:layout_marginLeft="@dimen/activity_vertical_margin"/>-->
 
 
-            <TextView
-                android:layout_below="@id/Gambar"
-                android:id="@+id/tvTanggal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_date_range"
-                android:drawableLeft="@drawable/ic_date_range"
-                android:textSize="10sp"
-                android:textColor="#000"
-                tools:text="Tanggal"/>
-        </RelativeLayout>
+
+
 
         <!--<LinearLayout
             android:layout_width="match_parent"

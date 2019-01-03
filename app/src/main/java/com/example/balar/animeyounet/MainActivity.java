@@ -4,14 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,11 +36,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private static final String JSON_URL = "https://animeyou.net/api/home.php";
     /*ListView listView;
 
     private List<AnimeItem> animeItemList;*/
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private ProgressDialog dialog;
 
 
@@ -50,6 +57,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        swipeRefreshLayout = findViewById(R.id.swLayout);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        loadAnime();
+                    }
+                },3000);
+            }
+        });
+
+
+        /*swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                setRefresh();
+            }
+        });*/
 
         ButterKnife.bind(this);
         adapter = new AnimeAdapter(this);
@@ -66,6 +99,20 @@ public class MainActivity extends AppCompatActivity {
         loadAnime();
 
     }
+
+
+
+    /*@Override
+    public void onRefresh() {
+        setRefresh();
+    }
+
+    private void setRefresh() {
+
+        swipeRefreshLayout.setRefreshing(false);
+        loadAnime();
+
+    }*/
 
     private void loadAnime() {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL, new Response.Listener<String>() {
@@ -87,8 +134,14 @@ public class MainActivity extends AppCompatActivity {
                                 animeObject.getString("genre"),
                                 animeObject.getString("video"),
                                 animeObject.getString("video2"),
-                                animeObject.getString("video3")
+                                animeObject.getString("video3"),
+                                animeObject.getString("judul_series"),
+                                animeObject.getString("gambar_series"),
+                                animeObject.getString("url"),
+                                animeObject.getString("halaman")
+
                         );
+                        Log.d("Test", "onResponse: "+animeItem.getJudul());
                         /*animeItemList.add(animeItem);*/
                         animex.add(animeItem);
                     }
@@ -96,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     /*AnimeAdapter adapter = new AnimeAdapter(animeItemList, getApplicationContext());
                     listView.setAdapter(adapter);
                     dialog.dismiss();*/
-
+                    Log.d("test", "onResponse: "+JSON_URL);
                     dialog.dismiss();
                     rvAnime.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                     adapter.setAnimeItemList(animex);
@@ -120,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+
 
 }
 

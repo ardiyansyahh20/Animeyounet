@@ -1,8 +1,10 @@
 package com.example.balar.animeyounet;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -15,19 +17,31 @@ import butterknife.ButterKnife;
 
 public class DetailAnime extends AppCompatActivity {
 
+
     @BindView(R.id.dtJudul)
     TextView judul;
     @BindView(R.id.dtGambar)
     ImageView gambar;
     @BindView(R.id.dtTanggal)
     TextView tanggal;
+    @BindView(R.id.fb)
+    TextView fb;
+
+    @BindView(R.id.ig)
+    TextView ig;
+
     /*@BindView(R.id.dtGenre)
     TextView genre;*/
 
     @BindView(R.id.video)
     WebView video;
 
+
+
     public Anime Detail;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +52,15 @@ public class DetailAnime extends AppCompatActivity {
 
 
 
+
         Detail = getIntent().getParcelableExtra("detail");
         judul.setText(Detail.getJudul());
         tanggal.setText(Detail.getTanggal());
         Glide.with(this)
                 .load(Detail.getGambar())
                 .into(gambar);
+
+
 
 
         video.loadUrl("file:///android_asset/video.html");
@@ -67,6 +84,31 @@ public class DetailAnime extends AppCompatActivity {
                         "document.getElementById('GDrive').src ='"+ GDrive+"'})()");
                 video.loadUrl("javascript:(function(){" +
                         "document.getElementById('YouDrive').src ='"+ YouDrive+"'})()");
+            }
+        });
+
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri url = Uri.parse("https://www.facebook.com/animeyou.net/");
+
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, url);
+                startActivity(intent);
+
+
+            }
+        });
+        ig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri url = Uri.parse("https://www.instagram.com/animeyou_net/");
+
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, url);
+                startActivity(intent);
+
+
             }
         });
 

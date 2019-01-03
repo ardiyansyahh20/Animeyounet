@@ -1,60 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailAnime">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <ImageView
-                android:id="@+id/dtGambar"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:fitsSystemWindows="true"
-                android:scaleType="center"
-                app:layout_collapseMode="parallax" />
-            <!--<android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
-        </android.support.design.widget.CollapsingToolbarLayout>
 
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fff"
                 android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:id="@+id/dtGambar"
+                    tools:src="@color/colorAccent"/>
                 <TextView
                     android:id="@+id/dtJudul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="32sp"
-                    android:text="Judul"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Nanatsu no taizai movie : tenkou no tarawarebito  subtitle indonesia"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginBottom="8dp"
                     android:textColor="@android:color/black"/>
                 <TextView
                     android:id="@+id/dtTanggal"
@@ -64,17 +35,71 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:lineSpacingMultiplier="1"
+                    android:textSize="10sp"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:drawableLeft="@drawable/ic_date_range"
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jika video di dibawah tidak muncul, silakan ganti server video yang ada di bawah ini :"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:textSize="10sp"
                     android:textColor="@android:color/black"/>
                 <WebView
                     android:id="@+id/video"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:text="@string/like_follow_media_sosial_resmi_kami_untuk_mendapatkan_informasi_terbaru_anime_subtitle_indonesia"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:textColor="@android:color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
+                    <TextView
+                        android:id="@+id/fb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:text="FACEBOOK"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:textColor="@color/Facebook"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/ig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:text="INSTAGRAM"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:textColor="@color/Instagram"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
 
-    </android.support.design.widget.AppBarLayout>
 
     <!--<LinearLayout
         android:layout_width="match_parent"
@@ -272,4 +297,4 @@
                 </TableRow>
         </TableLayout>
     </LinearLayout>-->
-</android.support.design.widget.CoordinatorLayout>
+</ScrollView>
