@@ -23,6 +23,7 @@
         <activity
             android:name=".DetailAnime"
             android:configChanges="orientation|screenSize|navigation" />
+        <activity android:name=".Fullscreen"></activity>
     </application>
 
 </manifest>

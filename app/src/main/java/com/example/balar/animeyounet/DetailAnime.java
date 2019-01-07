@@ -1,14 +1,18 @@
 package com.example.balar.animeyounet;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -38,10 +42,11 @@ public class DetailAnime extends AppCompatActivity {
 
 
 
+
     public Anime Detail;
 
 
-
+    private VideoEnabledWebChromeClient webChromeClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,61 @@ public class DetailAnime extends AppCompatActivity {
                 .load(Detail.getGambar())
                 .into(gambar);
 
+        View nonVideoLayout = findViewById(R.id.nonVideoLayout);
+        ViewGroup videoLayout = findViewById(R.id.videoLayout);
+        View loadingView = getLayoutInflater().inflate(R.layout.fullscreen_video, null);
+        webChromeClient = new VideoEnabledWebChromeClient(nonVideoLayout, videoLayout, video){
+            // Subscribe to standard events, such as onProgressChanged()...
+            @Override
+            public void onProgressChanged(WebView view, int progress)
+            {
+                // Your code...
+            }
+        };
 
+        webChromeClient.setOnToggledFullscreen(new VideoEnabledWebChromeClient.ToggledFullscreenCallback()
+        {
+            @Override
+            public void toggledFullscreen(boolean fullscreen)
+            {
+                // Your code to handle the full-screen change, for example showing and hiding the title bar. Example:
+                if (fullscreen)
+                {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    /*Toast.makeText(DetailAnime.this, "test full", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DetailAnime.this, Fullscreen.class);
+                    intent.putExtra("link",Detail);
+                    startActivity(intent);*/
 
+                    WindowManager.LayoutParams attrs = getWindow().getAttributes();
+                    attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+                    attrs.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                    getWindow().setAttributes(attrs);
+                    if (android.os.Build.VERSION.SDK_INT >= 21)
+                    {
+                        //noinspection all
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+                    }
+                }
+                else
+                {
+                    WindowManager.LayoutParams attrs = getWindow().getAttributes();
+                    attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+                    attrs.flags &= ~WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                    getWindow().setAttributes(attrs);
+                    if (android.os.Build.VERSION.SDK_INT >= 21)
+                    {
+                        //noinspection all
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                    }
+                }
+
+            }
+        });
+
+        video.setWebChromeClient(webChromeClient);
+        // Call private class InsideWebViewClient
+        video.setWebViewClient(new InsideWebViewClient());
 
         video.loadUrl("file:///android_asset/video.html");
         video.getSettings().setJavaScriptEnabled(true);
@@ -112,5 +170,34 @@ public class DetailAnime extends AppCompatActivity {
             }
         });
 
+    }
+
+    private class InsideWebViewClient extends WebViewClient {
+        @Override
+        // Force links to be opened inside WebView and not in Default Browser
+        // Thanks http://stackoverflow.com/a/33681975/1815624
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        // Notify the VideoEnabledWebChromeClient, and handle it ourselves if it doesn't handle it
+        if (!webChromeClient.onBackPressed())
+        {
+            if (video.canGoBack())
+            {
+                video.goBack();
+            }
+            else
+            {
+                // Standard back button implementation (for example this could close the app)
+                super.onBackPressed();
+
+            }
+        }
     }
 }

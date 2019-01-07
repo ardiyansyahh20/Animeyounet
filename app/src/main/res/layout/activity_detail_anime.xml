@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,8 +7,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailAnime">
+    <!-- View where the video will be shown when video goes fullscreen -->
+    <RelativeLayout
+        android:id="@+id/videoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-            <LinearLayout
+        <!-- View that will be shown while the fullscreen video loads. For example you could include
+        a "Loading..." message. However, in this particular example this view is actually defined in
+        view_loading_video.xml and inflated programmatically in ExampleActivity.java. The reason for
+        this is to keep the main layout (this file) cleaner. -->
+        <!-- <View
+            android:id="@+id/videoLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" /> -->
+
+
+
+            <RelativeLayout
+                android:id="@+id/nonVideoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fff"
@@ -18,6 +38,7 @@
                     android:id="@+id/dtGambar"
                     tools:src="@color/colorAccent"/>
                 <TextView
+                    android:layout_below="@+id/dtGambar"
                     android:id="@+id/dtJudul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -28,6 +49,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/black"/>
                 <TextView
+                    android:layout_below="@+id/dtJudul"
                     android:id="@+id/dtTanggal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,22 +63,41 @@
                     android:textColor="@android:color/black"/>
 
                 <TextView
+                    android:layout_below="@+id/dtTanggal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/info"
                     android:text="Jika video di dibawah tidak muncul, silakan ganti server video yang ada di bawah ini :"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:textSize="10sp"
                     android:textColor="@android:color/black"/>
-                <WebView
+
+                <!-- View that will be hidden when video goes fullscreen -->
+
+
+                    <com.example.balar.animeyounet.VideoEnabledWebView
+                        android:layout_below="@+id/info"
+                        android:id="@+id/video"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+
+
+
+                <!--<WebView
                     android:id="@+id/video"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"/>-->
 
                 <TextView
+                    android:layout_below="@+id/video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/like"
                     android:textSize="14sp"
                     android:textStyle="italic"
                     android:textAlignment="center"
@@ -66,12 +107,14 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:textColor="@android:color/black"/>
 
-                <LinearLayout
+                <RelativeLayout
+                    android:layout_below="@+id/like"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:layout_marginBottom="@dimen/activity_vertical_margin">
                     <TextView
+
                         android:id="@+id/fb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,11 +139,11 @@
                         android:textColor="@color/Instagram"
                         android:layout_weight="1"/>
 
-                </LinearLayout>
+                </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-
+    </RelativeLayout>
     <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
