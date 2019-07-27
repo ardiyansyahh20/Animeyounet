@@ -1,4 +1,4 @@
-package com.example.balar.animeyounet;
+package com.balar.animeyounet;
 
 import org.junit.Test;
 

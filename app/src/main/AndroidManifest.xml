@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.balar.animeyounet">
+    package="com.balar.animeyounet">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.balar.animeyounet.MainActivity"
             android:configChanges="orientation|screenSize|navigation">
 
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailAnime"
+            android:name="com.balar.animeyounet.DetailAnime"
             android:configChanges="orientation|screenSize|navigation" />
     </application>
 

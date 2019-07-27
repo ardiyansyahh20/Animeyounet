@@ -1,9 +1,7 @@
-package com.example.balar.animeyounet;
+package com.balar.animeyounet;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class Anime implements Parcelable {
     private String judul, gambar, tanggal, genre, video, video1, video2, judul_series, gambar_series, url, halaman;

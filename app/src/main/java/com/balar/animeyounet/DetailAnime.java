@@ -1,18 +1,17 @@
-package com.example.balar.animeyounet;
+package com.balar.animeyounet;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -20,11 +19,10 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +53,19 @@ public class DetailAnime extends AppCompatActivity {
 
     public Anime Detail;
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        DetailAnime.super.onBackPressed();
+                        return true;
+                    case R.id.navigation_search:
+                        return true;
+                    case R.id.navigation_collection:
+                        return true;
+                }
+                return false;
+            };
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -65,7 +76,8 @@ public class DetailAnime extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
         Detail = getIntent().getParcelableExtra("detail");

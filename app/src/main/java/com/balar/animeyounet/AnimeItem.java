@@ -1,7 +1,4 @@
-package com.example.balar.animeyounet;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.balar.animeyounet;
 
 import java.io.Serializable;
 

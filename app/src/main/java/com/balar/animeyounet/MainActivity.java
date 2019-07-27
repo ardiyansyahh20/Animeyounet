@@ -1,22 +1,15 @@
-package com.example.balar.animeyounet;
+package com.balar.animeyounet;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,13 +18,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +39,19 @@ public class MainActivity extends AppCompatActivity{
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private ProgressDialog dialog;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        loadAnime();
+                        return true;
+                    case R.id.navigation_search:
+                        return true;
+                    case R.id.navigation_collection:
+                        return true;
+                }
+                return false;
+            };
 
 
     @BindView(R.id.rv_category)
@@ -58,6 +65,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         swipeRefreshLayout = findViewById(R.id.swLayout);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
@@ -65,24 +74,32 @@ public class MainActivity extends AppCompatActivity{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        loadAnime();
-                    }
+                new Handler().postDelayed(() -> {
+                    swipeRefreshLayout.setRefreshing(false);
+                    loadAnime();
                 },3000);
             }
         });
 
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.nav_view);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.navigation_home:
+//                        Toast.makeText(MainActivity.this, "Recents", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.navigation_search:
+//                        Toast.makeText(MainActivity.this, "Favorites", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.navigation_collection:
+//                        Toast.makeText(MainActivity.this, "Nearby", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
-        /*swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                setRefresh();
-            }
-        });*/
 
         ButterKnife.bind(this);
         adapter = new AnimeAdapter(this);
@@ -161,18 +178,14 @@ public class MainActivity extends AppCompatActivity{
 
             }
         },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                error -> Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
 
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
     }
+
 
 
 }
