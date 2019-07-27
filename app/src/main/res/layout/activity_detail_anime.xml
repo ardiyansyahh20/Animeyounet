@@ -8,10 +8,10 @@
     android:layout_height="match_parent"
     tools:context=".DetailAnime">
     <!-- View where the video will be shown when video goes fullscreen -->
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/videoLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent" >-->
 
         <!-- View that will be shown while the fullscreen video loads. For example you could include
         a "Loading..." message. However, in this particular example this view is actually defined in
@@ -26,8 +26,7 @@
 
 
 
-            <RelativeLayout
-                android:id="@+id/nonVideoLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fff"
@@ -38,7 +37,6 @@
                     android:id="@+id/dtGambar"
                     tools:src="@color/colorAccent"/>
                 <TextView
-                    android:layout_below="@+id/dtGambar"
                     android:id="@+id/dtJudul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,7 +47,6 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/black"/>
                 <TextView
-                    android:layout_below="@+id/dtJudul"
                     android:id="@+id/dtTanggal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,11 +60,10 @@
                     android:textColor="@android:color/black"/>
 
                 <TextView
-                    android:layout_below="@+id/dtTanggal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/info"
-                    android:text="Jika video di dibawah tidak muncul, silakan ganti server video yang ada di bawah ini :"
+                    android:text="Jika video di dibawah tidak muncul, file video terlalu besar sehingga tidak bisa di tonton. Alternatifnya silahkan di download."
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -77,24 +73,23 @@
                 <!-- View that will be hidden when video goes fullscreen -->
 
 
-                    <com.example.balar.animeyounet.VideoEnabledWebView
+                    <!--<com.example.balar.animeyounet.VideoEnabledWebView
                         android:layout_below="@+id/info"
                         android:id="@+id/video"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent" />-->
 
 
 
 
 
 
-                <!--<WebView
+                <WebView
                     android:id="@+id/video"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>-->
+                    android:layout_height="300dp"/>
 
                 <TextView
-                    android:layout_below="@+id/video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/like"
@@ -107,8 +102,7 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:textColor="@android:color/black"/>
 
-                <RelativeLayout
-                    android:layout_below="@+id/like"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
@@ -139,11 +133,11 @@
                         android:textColor="@color/Instagram"
                         android:layout_weight="1"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
     <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

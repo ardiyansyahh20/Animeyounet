@@ -3,8 +3,10 @@
     package="com.example.balar.animeyounet">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,6 +16,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|navigation">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +26,6 @@
         <activity
             android:name=".DetailAnime"
             android:configChanges="orientation|screenSize|navigation" />
-        <activity android:name=".Fullscreen"></activity>
     </application>
 
 </manifest>

@@ -1,20 +1,30 @@
 package com.example.balar.animeyounet;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +48,7 @@ public class DetailAnime extends AppCompatActivity {
     TextView genre;*/
 
     @BindView(R.id.video)
-    WebView video;
+    WebView Video;
 
 
 
@@ -46,8 +56,8 @@ public class DetailAnime extends AppCompatActivity {
     public Anime Detail;
 
 
-    private VideoEnabledWebChromeClient webChromeClient;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +75,7 @@ public class DetailAnime extends AppCompatActivity {
                 .load(Detail.getGambar())
                 .into(gambar);
 
-        View nonVideoLayout = findViewById(R.id.nonVideoLayout);
+        /*View nonVideoLayout = findViewById(R.id.nonVideoLayout);
         ViewGroup videoLayout = findViewById(R.id.videoLayout);
         View loadingView = getLayoutInflater().inflate(R.layout.fullscreen_video, null);
         webChromeClient = new VideoEnabledWebChromeClient(nonVideoLayout, videoLayout, video){
@@ -75,9 +85,9 @@ public class DetailAnime extends AppCompatActivity {
             {
                 // Your code...
             }
-        };
+        };*/
 
-        webChromeClient.setOnToggledFullscreen(new VideoEnabledWebChromeClient.ToggledFullscreenCallback()
+        /*webChromeClient.setOnToggledFullscreen(new VideoEnabledWebChromeClient.ToggledFullscreenCallback()
         {
             @Override
             public void toggledFullscreen(boolean fullscreen)
@@ -85,11 +95,16 @@ public class DetailAnime extends AppCompatActivity {
                 // Your code to handle the full-screen change, for example showing and hiding the title bar. Example:
                 if (fullscreen)
                 {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    /*Toast.makeText(DetailAnime.this, "test full", Toast.LENGTH_SHORT).show();
+
+                   *//* Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_STREAM,Detail.getVideo());
+                    intent.setDataAndType(Uri.fromFile(), "video/*");
+                    context.startActivity(intent);*//*
+                    *//*setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);*//*
+                    *//*Toast.makeText(DetailAnime.this, "test full", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DetailAnime.this, Fullscreen.class);
                     intent.putExtra("link",Detail);
-                    startActivity(intent);*/
+                    startActivity(intent);*//*
 
                     WindowManager.LayoutParams attrs = getWindow().getAttributes();
                     attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -115,33 +130,36 @@ public class DetailAnime extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
-        video.setWebChromeClient(webChromeClient);
+        Video.setWebChromeClient(new MyChrome());
         // Call private class InsideWebViewClient
-        video.setWebViewClient(new InsideWebViewClient());
+        Video.setWebViewClient(new Browser_home());
+        Video.loadUrl("file:///android_asset/video.html");
 
-        video.loadUrl("file:///android_asset/video.html");
-        video.getSettings().setJavaScriptEnabled(true);
+        WebSettings video = Video.getSettings();
+        video.setJavaScriptEnabled(true);
+
+
 
 //      untuk set webView saat diload pertamakali
-        video.setWebViewClient(new WebViewClient(){
+        Video.setWebViewClient(new WebViewClient(){
 
             // method loadPageFinish untuk set semua asset yang ada sebelum selesai di tampilkan
             @Override
             public void onPageFinished(WebView view, String url) {
 
                 String Google = Detail.getVideo();//Masukan string video 1 disini
-                String GDrive = Detail.getVideo1();//Masukan string video 2 disini
-                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini
+                /*String GDrive = Detail.getVideo1();//Masukan string video 2 disini
+                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini*/
 //              panggil fungsi loadUrl lalu buat javascript untuk menganti atribute dari iframe dengan id iframe
 //              berlaku juga untuk sytax html lain
-                video.loadUrl("javascript:(function(){" +
+                Video.loadUrl("javascript:(function(){" +
                         "document.getElementById('Google').src ='"+ Google+"'})()");
-                video.loadUrl("javascript:(function(){" +
+                /*Video.loadUrl("javascript:(function(){" +
                         "document.getElementById('GDrive').src ='"+ GDrive+"'})()");
-                video.loadUrl("javascript:(function(){" +
-                        "document.getElementById('YouDrive').src ='"+ YouDrive+"'})()");
+                Video.loadUrl("javascript:(function(){" +
+                        "document.getElementById('YouDrive').src ='"+ YouDrive+"'})()");*/
             }
         });
 
@@ -172,7 +190,71 @@ public class DetailAnime extends AppCompatActivity {
 
     }
 
-    private class InsideWebViewClient extends WebViewClient {
+    class Browser_home extends WebViewClient {
+
+        Browser_home() {
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            setTitle(view.getTitle());
+            super.onPageFinished(view, url);
+
+        }
+    }
+
+    private class MyChrome extends WebChromeClient {
+        private View mCustomView;
+        private WebChromeClient.CustomViewCallback mCustomViewCallback;
+        protected FrameLayout mFullscreenContainer;
+        private int mOriginalOrientation;
+        private int mOriginalSystemUiVisibility;
+
+        MyChrome() {}
+
+        public Bitmap getDefaultVideoPoster()
+        {
+            if (mCustomView == null) {
+                return null;
+            }
+            return BitmapFactory.decodeResource(getApplicationContext().getResources(), 2130837573);
+        }
+
+        public void onHideCustomView()
+        {
+            ((FrameLayout)getWindow().getDecorView()).removeView(this.mCustomView);
+            this.mCustomView = null;
+            getWindow().getDecorView().setSystemUiVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            this.mCustomViewCallback.onCustomViewHidden();
+            this.mCustomViewCallback = null;
+        }
+
+        public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback paramCustomViewCallback)
+        {
+            if (this.mCustomView != null)
+            {
+                onHideCustomView();
+                return;
+            }
+            this.mCustomView = paramView;
+            this.mOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            this.mCustomViewCallback = paramCustomViewCallback;
+            ((FrameLayout)getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
+            getWindow().getDecorView().setSystemUiVisibility(View.INVISIBLE);
+        }
+    }
+
+
+
+    /*private class InsideWebViewClient extends WebViewClient {
         @Override
         // Force links to be opened inside WebView and not in Default Browser
         // Thanks http://stackoverflow.com/a/33681975/1815624
@@ -199,5 +281,7 @@ public class DetailAnime extends AppCompatActivity {
 
             }
         }
-    }
+    }*/
+
+
 }
