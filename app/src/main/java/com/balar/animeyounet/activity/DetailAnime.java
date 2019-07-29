@@ -1,4 +1,4 @@
-package com.balar.animeyounet;
+package com.balar.animeyounet.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,10 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -20,14 +19,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balar.animeyounet.R;
+import com.balar.animeyounet.entity.Anime;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailAnime extends AppCompatActivity {
+public class DetailAnime extends AppCompatActivity implements RewardedVideoAdListener {
 
 
     @BindView(R.id.dtJudul)
@@ -52,6 +60,9 @@ public class DetailAnime extends AppCompatActivity {
 
 
     public Anime Detail;
+    private RewardedVideoAd mRewardedVideoAd;
+    private PublisherAdView mPublisherAdView;
+    private  CountDownTimer countDownTimer;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -60,6 +71,8 @@ public class DetailAnime extends AppCompatActivity {
                         DetailAnime.super.onBackPressed();
                         return true;
                     case R.id.navigation_search:
+                        Intent intent = new Intent(DetailAnime.this, Search.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_collection:
                         return true;
@@ -74,10 +87,39 @@ public class DetailAnime extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_anime);
 
-        ButterKnife.bind(this);
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+//        countDownTimer = new CountDownTimer(30000, 1000) {
+//            @Override
+//            public void onTick(long l) {
+//                Toast.makeText(DetailAnime.this, "seconds remaining: " + l / 1000, Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                Toast.makeText(DetailAnime.this, "Selesai: ", Toast.LENGTH_LONG).show();
+//
+//            }
+//        }.start();
+// Use an activity context to get the rewarded video instance.
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
+
+        mPublisherAdView = findViewById(R.id.publisherAdView);
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
+        mPublisherAdView.loadAd(adRequest);
+
+
+
+        ButterKnife.bind(this);
+
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+
 
 
         Detail = getIntent().getParcelableExtra("detail");
@@ -162,45 +204,88 @@ public class DetailAnime extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
 
                 String Google = Detail.getVideo();//Masukan string video 1 disini
-                /*String GDrive = Detail.getVideo1();//Masukan string video 2 disini
-                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini*/
+                String GDrive = Detail.getVideo1();//Masukan string video 2 disini
+                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini
 //              panggil fungsi loadUrl lalu buat javascript untuk menganti atribute dari iframe dengan id iframe
 //              berlaku juga untuk sytax html lain
                 Video.loadUrl("javascript:(function(){" +
                         "document.getElementById('Google').src ='"+ Google+"'})()");
-                /*Video.loadUrl("javascript:(function(){" +
-                        "document.getElementById('GDrive').src ='"+ GDrive+"'})()");
-                Video.loadUrl("javascript:(function(){" +
-                        "document.getElementById('YouDrive').src ='"+ YouDrive+"'})()");*/
+//                Video.loadUrl("javascript:(function(){" +
+//                        "document.getElementById('GDrive').src ='"+ GDrive+"'})()");
+//                Video.loadUrl("javascript:(function(){" +
+//                        "document.getElementById('YouDrive').src ='"+ YouDrive+"'})()");
             }
         });
 
-        fb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri url = Uri.parse("https://www.facebook.com/animeyou.net/");
+
+        fb.setOnClickListener(v -> {
+            Uri url = Uri.parse("https://www.facebook.com/animeyou.net/");
 
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, url);
-                startActivity(intent);
+            Intent intent = new Intent(Intent.ACTION_VIEW, url);
+            startActivity(intent);
 
 
-            }
+
         });
-        ig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri url = Uri.parse("https://www.instagram.com/animeyou_net/");
+        ig.setOnClickListener(v -> {
+            Uri url = Uri.parse("https://www.instagram.com/animeyou_net/");
 
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, url);
-                startActivity(intent);
+            Intent intent = new Intent(Intent.ACTION_VIEW, url);
+            startActivity(intent);
 
 
-            }
         });
 
     }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("/6499/example/rewarded-video",
+                new AdRequest.Builder().build());
+    }
+
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+
 
     class Browser_home extends WebViewClient {
 
@@ -255,6 +340,7 @@ public class DetailAnime extends AppCompatActivity {
                 onHideCustomView();
                 return;
             }
+            mRewardedVideoAd.show();
             this.mCustomView = paramView;
             this.mOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

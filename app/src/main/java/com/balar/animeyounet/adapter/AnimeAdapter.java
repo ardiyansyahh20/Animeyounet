@@ -1,4 +1,4 @@
-package com.balar.animeyounet;
+package com.balar.animeyounet.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balar.animeyounet.listener.CustomOnItemClickListener;
+import com.balar.animeyounet.R;
+import com.balar.animeyounet.activity.DetailAnime;
+import com.balar.animeyounet.entity.Anime;
 import com.bumptech.glide.Glide;
 
 
@@ -108,6 +112,7 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
 
         viewHolder.tvJudul.setText(getAnimeItem().get(i).getJudul());
         viewHolder.tvJudul.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
+
             @Override
             public void onItemClicked(View view, int position) {
                 Intent intent = new Intent(context, DetailAnime.class);

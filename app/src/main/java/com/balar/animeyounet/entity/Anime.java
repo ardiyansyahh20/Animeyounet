@@ -1,4 +1,4 @@
-package com.balar.animeyounet;
+package com.balar.animeyounet.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

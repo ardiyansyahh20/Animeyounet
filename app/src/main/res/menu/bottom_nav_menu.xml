@@ -11,9 +11,11 @@
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
         />
+
     <item
         android:id="@+id/navigation_collection"
         android:enabled="true"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Collection" />
+
 </menu>

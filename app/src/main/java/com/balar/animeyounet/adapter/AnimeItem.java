@@ -1,4 +1,4 @@
-package com.balar.animeyounet;
+package com.balar.animeyounet.adapter;
 
 import java.io.Serializable;
 
