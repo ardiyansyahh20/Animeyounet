@@ -10,6 +10,7 @@ import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -18,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balar.animeyounet.R;
 import com.balar.animeyounet.entity.Anime;
@@ -26,6 +28,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
@@ -35,7 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailAnime extends AppCompatActivity implements RewardedVideoAdListener {
+public class DetailAnime extends AppCompatActivity {
 
 
     @BindView(R.id.dtJudul)
@@ -60,35 +63,15 @@ public class DetailAnime extends AppCompatActivity implements RewardedVideoAdLis
 
 
     public Anime Detail;
-    private RewardedVideoAd mRewardedVideoAd;
-    private PublisherAdView mPublisherAdView;
     private  CountDownTimer countDownTimer;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        DetailAnime.super.onBackPressed();
-                        return true;
-                    case R.id.navigation_search:
-                        Intent intent = new Intent(DetailAnime.this, Search.class);
-                        startActivity(intent);
-                        return true;
-                    case R.id.navigation_collection:
-                        return true;
-                }
-                return false;
-            };
-
+    private PublisherInterstitialAd mPublisherInterstitialAd;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_anime);
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 //        countDownTimer = new CountDownTimer(30000, 1000) {
 //            @Override
@@ -102,24 +85,19 @@ public class DetailAnime extends AppCompatActivity implements RewardedVideoAdLis
 //
 //            }
 //        }.start();
-// Use an activity context to get the rewarded video instance.
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        loadRewardedVideoAd();
 
-        mPublisherAdView = findViewById(R.id.publisherAdView);
-        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
-        mPublisherAdView.loadAd(adRequest);
+        mPublisherInterstitialAd = new PublisherInterstitialAd(this);
+        mPublisherInterstitialAd.setAdUnitId("/6499/example/interstitial");
+        mPublisherInterstitialAd.loadAd(new PublisherAdRequest.Builder().build());
 
+        if (mPublisherInterstitialAd.isLoaded()) {
+            mPublisherInterstitialAd.show();
+        } else {
+            Toast.makeText(this, "Gagal Tayang", Toast.LENGTH_SHORT).show();
+        }
 
 
         ButterKnife.bind(this);
-
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-
-
 
 
         Detail = getIntent().getParcelableExtra("detail");
@@ -240,51 +218,7 @@ public class DetailAnime extends AppCompatActivity implements RewardedVideoAdLis
 
     }
 
-    private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("/6499/example/rewarded-video",
-                new AdRequest.Builder().build());
-    }
 
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
 
 
     class Browser_home extends WebViewClient {
@@ -340,7 +274,7 @@ public class DetailAnime extends AppCompatActivity implements RewardedVideoAdLis
                 onHideCustomView();
                 return;
             }
-            mRewardedVideoAd.show();
+
             this.mCustomView = paramView;
             this.mOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

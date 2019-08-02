@@ -11,88 +11,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balar.animeyounet.entity.AnimeItem;
 import com.balar.animeyounet.listener.CustomOnItemClickListener;
 import com.balar.animeyounet.R;
 import com.balar.animeyounet.activity.DetailAnime;
 import com.balar.animeyounet.entity.Anime;
 import com.bumptech.glide.Glide;
-
-
 import java.util.ArrayList;
 
-
-
-
-
-
-
-
-    /*private List<AnimeItem> animeItemList;
-    private Context context;
-
-
-    public AnimeAdapter(List<AnimeItem> animeItemList, Context context) {
-        super(context, R.layout.list_item, animeItemList);
-        this.animeItemList = animeItemList;
-        this.context = context;
-
-
-    }
-
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View listViewItem = inflater.inflate(R.layout.list_item, null, true);
-
-        TextView tvJudul = listViewItem.findViewById(R.id.tvJudul);
-        TextView tvTanggal = listViewItem.findViewById(R.id.tvTanggal);
-        ImageView imageView = listViewItem.findViewById(R.id.Gambar);
-        Button btnWatch = listViewItem.findViewById(R.id.btn_set_watch);
-
-
-        btnWatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                *//*Toast.makeText(context,"Comming Soon Broo...",Toast.LENGTH_SHORT).show();*//*
-                Intent intent = new Intent(context, DetailAnime.class);
-                context.startActivity(intent);
-            }
-        });
-
-        AnimeItem animeItem = animeItemList.get(position);
-        tvJudul.setText(animeItem.getJudul());
-        tvTanggal.setText(animeItem.getTanggal());
-        Glide.with(context).load(animeItem.getGambar()).into(imageView);
-
-        return listViewItem;
-    }*/
-
-
+import butterknife.ButterKnife;
 
 public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> {
     private ArrayList<AnimeItem> animeItemList;
     private Context context;
 
-    public AnimeAdapter(Context context){
+    public AnimeAdapter(ArrayList<AnimeItem> animeItems, Context context){
+        this.animeItemList = animeItems;
         this.context = context;
     }
-
-    public ArrayList<AnimeItem> getAnimeItem(){
-        return animeItemList;
-    }
-
-    public void setAnimeItemList(ArrayList<AnimeItem> animeItemList) {
-        this.animeItemList = animeItemList;
-    }
-
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item,viewGroup,false);
-
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.list_item, viewGroup, false);
+        ButterKnife.bind(this, view);
         return new ViewHolder(view);
     }
 
@@ -100,95 +43,69 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-
         final AnimeItem anime = animeItemList.get(i);
-
+        viewHolder.tvJudul_series.setText(anime.getJudul_series());
         Glide.with(context)
-                .load(getAnimeItem().get(i).getGambar_series())
+                .load(anime.getGambar_series())
                 .into(viewHolder.Gambar_series);
-
-        viewHolder.tvJudul_series.setText(getAnimeItem().get(i).getJudul_series());
-
-
-        viewHolder.tvJudul.setText(getAnimeItem().get(i).getJudul());
-        viewHolder.tvJudul.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
-
-            @Override
-            public void onItemClicked(View view, int position) {
-                Intent intent = new Intent(context, DetailAnime.class);
-                Anime anime = new Anime(getAnimeItem().get(i).getJudul(),
-                        getAnimeItem().get(i).getGambar(),
-                        getAnimeItem().get(i).getTanggal(),
-                        getAnimeItem().get(i).getGenre(),
-                        getAnimeItem().get(i).getVideo(),
-                        getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2(),
-                        getAnimeItem().get(i).getJudul_series(),
-                        getAnimeItem().get(i).getGambar_series(),
-                        getAnimeItem().get(i).getUrl(),
-                        getAnimeItem().get(i).getHalaman()
-                );
-                intent.putExtra("detail", anime);
-                context.startActivity(intent);
-            }
-        }));
-        viewHolder.tvTanggal.setText(getAnimeItem().get(i).getTanggal());
-
+        viewHolder.tvJudul.setText(anime.getJudul());
         Glide.with(context)
-                .load(getAnimeItem().get(i).getGambar())
+                .load(anime.getGambar())
                 .into(viewHolder.imgAnime);
-        viewHolder.imgAnime.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
-            @Override
-            public void onItemClicked(View view, int position) {
-                Intent intent = new Intent(context, DetailAnime.class);
-                Anime anime = new Anime(getAnimeItem().get(i).getJudul(),
-                        getAnimeItem().get(i).getGambar(),
-                        getAnimeItem().get(i).getTanggal(),
-                        getAnimeItem().get(i).getGenre(),
-                        getAnimeItem().get(i).getVideo(),
-                        getAnimeItem().get(i).getVideo1(),
-                        getAnimeItem().get(i).getVideo2(),
-                        getAnimeItem().get(i).getJudul_series(),
-                        getAnimeItem().get(i).getGambar_series(),
-                        getAnimeItem().get(i).getUrl(),
-                        getAnimeItem().get(i).getHalaman()
-                );
-                intent.putExtra("detail", anime);
-                context.startActivity(intent);
-            }
+        viewHolder.tvTanggal.setText(anime.getTanggal());
+
+        viewHolder.tvJudul.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
+            Intent intent = new Intent(context, DetailAnime.class);
+            Anime anime1 = new Anime(anime.getJudul(),
+                    anime.getGambar(),
+                    anime.getTanggal(),
+                    anime.getGenre(),
+                    anime.getVideo(),
+                    anime.getVideo1(),
+                    anime.getVideo2(),
+                    anime.getJudul_series(),
+                    anime.getGambar_series(),
+                    anime.getUrl(),
+                    anime.getHalaman()
+            );
+            intent.putExtra("detail", anime1);
+            context.startActivity(intent);
         }));
 
-        viewHolder.btn_share.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
-            @Override
-            public void onItemClicked(View view, int position) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, anime.getUrl());
-                intent.setType("text/plain");
-                context.startActivity(intent);
-            }
+        viewHolder.imgAnime.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
+            Intent intent = new Intent(context, DetailAnime.class);
+            Anime anime12 = new Anime(anime.getJudul(),
+                    anime.getGambar(),
+                    anime.getTanggal(),
+                    anime.getGenre(),
+                    anime.getVideo(),
+                    anime.getVideo1(),
+                    anime.getVideo2(),
+                    anime.getJudul_series(),
+                    anime.getGambar_series(),
+                    anime.getUrl(),
+                    anime.getHalaman()
+            );
+            intent.putExtra("detail", anime12);
+            context.startActivity(intent);
         }));
 
-        /*viewHolder.btnWatch.setOnClickListener(new CustomOnItemClickListener(i, new CustomOnItemClickListener.OnItemClickCallback() {
-            @Override
-            public void onItemClicked(View view, int position) {
-                Intent intent = new Intent(context, DetailAnime.class);
-                Anime anime = new Anime(getAnimeItem().get(i).getJudul(),
-                        getAnimeItem().get(i).getGambar(),
-                        getAnimeItem().get(i).getTanggal(),
-                        getAnimeItem().get(i).getGenre()
-                        );
-                intent.putExtra("detail", anime);
-                context.startActivity(intent);
-            }
-        }));*/
+        viewHolder.btn_share.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, anime.getUrl());
+            intent.setType("text/plain");
+            context.startActivity(intent);
+        }));
+
     }
 
     @Override
     public int getItemCount() {
-        return getAnimeItem().size();
+        return animeItemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView tvJudul, tvTanggal, tvJudul_series;
         private ImageView imgAnime, Gambar_series;
         private ImageButton btn_share;
