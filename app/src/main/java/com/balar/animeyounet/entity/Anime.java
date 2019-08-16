@@ -4,21 +4,45 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Anime implements Parcelable {
-    private String judul, gambar, tanggal, genre, video, video1, video2, judul_series, gambar_series, url, halaman;
+    private String id, judul, gambar, tanggal, video, video1, video2, judul_series, gambar_series, url;
 
-    public Anime(String judul, String gambar, String tanggal, String genre, String video, String video1, String video2,
-                 String judul_series, String gambar_series, String url, String halaman){
+    public Anime(String id, String judul, String gambar, String tanggal, String video, String video1, String video2,
+                 String judul_series, String gambar_series, String url){
+        this.id=id;
         this.judul = judul;
         this.gambar = gambar;
         this.tanggal = tanggal;
-        this.genre = genre;
         this.video = video;
         this.video1 = video1;
         this.video2 = video2;
+        this.judul_series=judul_series;
+        this.gambar_series=gambar_series;
+        this.url=url;
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getJudul_series() {
+        return judul_series;
+    }
+
+    public void setJudul_series(String judul_series) {
         this.judul_series = judul_series;
+    }
+
+    public String getGambar_series() {
+        return gambar_series;
+    }
+
+    public void setGambar_series(String gambar_series) {
         this.gambar_series = gambar_series;
-        this.url = url;
-        this.halaman = halaman;
     }
 
     public String getUrl() {
@@ -27,14 +51,6 @@ public class Anime implements Parcelable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getHalaman() {
-        return halaman;
-    }
-
-    public void setHalaman(String halaman) {
-        this.halaman = halaman;
     }
 
     public String getVideo() {
@@ -85,29 +101,6 @@ public class Anime implements Parcelable {
         this.tanggal = tanggal;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getJudul_series() {
-        return judul_series;
-    }
-
-    public void setJudul_series(String judul_series) {
-        this.judul_series = judul_series;
-    }
-
-    public String getGambar_series() {
-        return gambar_series;
-    }
-
-    public void setGambar_series(String gambar_series) {
-        this.gambar_series = gambar_series;
-    }
 
     @Override
     public int describeContents() {
@@ -116,31 +109,29 @@ public class Anime implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.judul);
         dest.writeString(this.gambar);
         dest.writeString(this.tanggal);
-        dest.writeString(this.genre);
         dest.writeString(this.video);
         dest.writeString(this.video1);
         dest.writeString(this.video2);
         dest.writeString(this.judul_series);
         dest.writeString(this.gambar_series);
         dest.writeString(this.url);
-        dest.writeString(this.halaman);
     }
 
     protected Anime(Parcel in) {
+        this.id = in.readString();
         this.judul = in.readString();
         this.gambar = in.readString();
         this.tanggal = in.readString();
-        this.genre = in.readString();
         this.video = in.readString();
         this.video1 = in.readString();
         this.video2 = in.readString();
         this.judul_series = in.readString();
         this.gambar_series = in.readString();
         this.url = in.readString();
-        this.halaman = in.readString();
     }
 
     public static final Creator<Anime> CREATOR = new Creator<Anime>() {

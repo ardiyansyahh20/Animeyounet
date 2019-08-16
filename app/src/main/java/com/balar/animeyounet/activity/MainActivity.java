@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.balar.animeyounet.entity.AnimeItem;
 import com.balar.animeyounet.R;
+import com.balar.animeyounet.entity.SeriesItem;
 import com.balar.animeyounet.fragment.CollectionFragment;
 import com.balar.animeyounet.fragment.HomeFragment;
 import com.balar.animeyounet.fragment.SearchFragment;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity{
 //            }
 //        });
 
-        mPublisherAdView = findViewById(R.id.publisherAdView);
+        mPublisherAdView = findViewById(R.id.smart_banner);
         PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
         mPublisherAdView.loadAd(adRequest);
 

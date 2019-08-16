@@ -10,7 +10,6 @@ import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -19,20 +18,12 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balar.animeyounet.R;
 import com.balar.animeyounet.entity.Anime;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import butterknife.BindView;
@@ -60,12 +51,11 @@ public class DetailAnime extends AppCompatActivity {
     WebView Video;
 
 
-
-
     public Anime Detail;
     private  CountDownTimer countDownTimer;
 
-    private PublisherInterstitialAd mPublisherInterstitialAd;
+    private PublisherAdView adView;
+//    private PublisherInterstitialAd mPublisherInterstitialAd;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -86,19 +76,17 @@ public class DetailAnime extends AppCompatActivity {
 //            }
 //        }.start();
 
-        mPublisherInterstitialAd = new PublisherInterstitialAd(this);
-        mPublisherInterstitialAd.setAdUnitId("/6499/example/interstitial");
-        mPublisherInterstitialAd.loadAd(new PublisherAdRequest.Builder().build());
-
-        if (mPublisherInterstitialAd.isLoaded()) {
-            mPublisherInterstitialAd.show();
-        } else {
-            Toast.makeText(this, "Gagal Tayang", Toast.LENGTH_SHORT).show();
-        }
-
+//        mPublisherInterstitialAd = new PublisherInterstitialAd(this);
+//        mPublisherInterstitialAd.setAdUnitId("/6499/example/interstitial");
+//        mPublisherInterstitialAd.loadAd(new PublisherAdRequest.Builder().build());
+//
+//        if (mPublisherInterstitialAd.isLoaded()) {
+//            mPublisherInterstitialAd.show();
+//        } else {
+//            Toast.makeText(this, "Gagal Tayang", Toast.LENGTH_SHORT).show();
+//        }
 
         ButterKnife.bind(this);
-
 
         Detail = getIntent().getParcelableExtra("detail");
         judul.setText(Detail.getJudul());
@@ -106,84 +94,18 @@ public class DetailAnime extends AppCompatActivity {
         Glide.with(this)
                 .load(Detail.getGambar())
                 .into(gambar);
-
-        /*View nonVideoLayout = findViewById(R.id.nonVideoLayout);
-        ViewGroup videoLayout = findViewById(R.id.videoLayout);
-        View loadingView = getLayoutInflater().inflate(R.layout.fullscreen_video, null);
-        webChromeClient = new VideoEnabledWebChromeClient(nonVideoLayout, videoLayout, video){
-            // Subscribe to standard events, such as onProgressChanged()...
-            @Override
-            public void onProgressChanged(WebView view, int progress)
-            {
-                // Your code...
-            }
-        };*/
-
-        /*webChromeClient.setOnToggledFullscreen(new VideoEnabledWebChromeClient.ToggledFullscreenCallback()
-        {
-            @Override
-            public void toggledFullscreen(boolean fullscreen)
-            {
-                // Your code to handle the full-screen change, for example showing and hiding the title bar. Example:
-                if (fullscreen)
-                {
-
-                   *//* Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_STREAM,Detail.getVideo());
-                    intent.setDataAndType(Uri.fromFile(), "video/*");
-                    context.startActivity(intent);*//*
-                    *//*setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);*//*
-                    *//*Toast.makeText(DetailAnime.this, "test full", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(DetailAnime.this, Fullscreen.class);
-                    intent.putExtra("link",Detail);
-                    startActivity(intent);*//*
-
-                    WindowManager.LayoutParams attrs = getWindow().getAttributes();
-                    attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-                    attrs.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-                    getWindow().setAttributes(attrs);
-                    if (android.os.Build.VERSION.SDK_INT >= 21)
-                    {
-                        //noinspection all
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-                    }
-                }
-                else
-                {
-                    WindowManager.LayoutParams attrs = getWindow().getAttributes();
-                    attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-                    attrs.flags &= ~WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-                    getWindow().setAttributes(attrs);
-                    if (android.os.Build.VERSION.SDK_INT >= 21)
-                    {
-                        //noinspection all
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                    }
-                }
-
-            }
-        });*/
-
         Video.setWebChromeClient(new MyChrome());
-        // Call private class InsideWebViewClient
         Video.setWebViewClient(new Browser_home());
         Video.loadUrl("file:///android_asset/video.html");
 
         WebSettings video = Video.getSettings();
         video.setJavaScriptEnabled(true);
-
-
-
-//      untuk set webView saat diload pertamakali
         Video.setWebViewClient(new WebViewClient(){
-
-            // method loadPageFinish untuk set semua asset yang ada sebelum selesai di tampilkan
             @Override
             public void onPageFinished(WebView view, String url) {
-
                 String Google = Detail.getVideo();//Masukan string video 1 disini
-                String GDrive = Detail.getVideo1();//Masukan string video 2 disini
-                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini
+//                String GDrive = Detail.getVideo1();//Masukan string video 2 disini
+//                String YouDrive = Detail.getVideo2();//Masukan string video 3 disini
 //              panggil fungsi loadUrl lalu buat javascript untuk menganti atribute dari iframe dengan id iframe
 //              berlaku juga untuk sytax html lain
                 Video.loadUrl("javascript:(function(){" +
@@ -195,30 +117,22 @@ public class DetailAnime extends AppCompatActivity {
             }
         });
 
-
         fb.setOnClickListener(v -> {
             Uri url = Uri.parse("https://www.facebook.com/animeyou.net/");
-
-
             Intent intent = new Intent(Intent.ACTION_VIEW, url);
             startActivity(intent);
-
-
-
         });
         ig.setOnClickListener(v -> {
             Uri url = Uri.parse("https://www.instagram.com/animeyou_net/");
-
-
             Intent intent = new Intent(Intent.ACTION_VIEW, url);
             startActivity(intent);
-
-
         });
 
+        adView = findViewById(R.id.banner);
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
     }
-
-
 
 
     class Browser_home extends WebViewClient {
@@ -283,37 +197,6 @@ public class DetailAnime extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.INVISIBLE);
         }
     }
-
-
-
-    /*private class InsideWebViewClient extends WebViewClient {
-        @Override
-        // Force links to be opened inside WebView and not in Default Browser
-        // Thanks http://stackoverflow.com/a/33681975/1815624
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        // Notify the VideoEnabledWebChromeClient, and handle it ourselves if it doesn't handle it
-        if (!webChromeClient.onBackPressed())
-        {
-            if (video.canGoBack())
-            {
-                video.goBack();
-            }
-            else
-            {
-                // Standard back button implementation (for example this could close the app)
-                super.onBackPressed();
-
-            }
-        }
-    }*/
 
 
 }

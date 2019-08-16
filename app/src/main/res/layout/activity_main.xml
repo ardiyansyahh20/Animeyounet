@@ -19,7 +19,7 @@
 
     <com.google.android.gms.ads.doubleclick.PublisherAdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/publisherAdView"
+        android:id="@+id/smart_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item"/>-->
+        tools:listitem="@layout/list_home_item"/>-->
 
    <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swLayout"
@@ -58,7 +58,7 @@
             android:id="@+id/rv_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/list_item">
+            tools:listitem="@layout/list_home_item">
         </androidx.recyclerview.widget.RecyclerView>
 
         </RelativeLayout>

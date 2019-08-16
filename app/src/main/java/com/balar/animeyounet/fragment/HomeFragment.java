@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.balar.animeyounet.R;
 import com.balar.animeyounet.adapter.AnimeAdapter;
 import com.balar.animeyounet.entity.AnimeItem;
+import com.balar.animeyounet.entity.SeriesItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,14 +30,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
+ *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
     private RecyclerView rvanime;
     private RecyclerView.Adapter adapter;
     private View view;
     private ArrayList<AnimeItem> animex;
-        private static final String JSON_URL = "https://animeyou.net/api/home.php";
+            private static final String JSON_URL = "https://animeyou.net/api/home.php";
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -63,6 +64,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             swipeRefreshLayout.setRefreshing(false);
             loadAnime();
+            Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
         },3000));
         return view;
 
@@ -78,17 +80,21 @@ public class HomeFragment extends Fragment {
                     JSONObject animeObject = animeArray.getJSONObject(i);
 
                     AnimeItem animeItem = new AnimeItem(
+                            animeObject.getString("id"),
                             animeObject.getString("judul"),
                             animeObject.getString("gambar"),
                             animeObject.getString("tanggal"),
-                            animeObject.getString("genre"),
                             animeObject.getString("video"),
                             animeObject.getString("video2"),
                             animeObject.getString("video3"),
                             animeObject.getString("judul_series"),
                             animeObject.getString("gambar_series"),
-                            animeObject.getString("url"),
-                            animeObject.getString("halaman")
+                            animeObject.getString("url")
+//                            animeObject.getString("genre"),
+
+//                            animeObject.getString("judul_series"),
+//                            animeObject.getString("gambar_series"),
+//                            animeObject.getString("halaman")
 
                     );
                     animex.add(animeItem);

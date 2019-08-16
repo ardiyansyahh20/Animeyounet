@@ -3,6 +3,7 @@ package com.balar.animeyounet.adapter;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +11,34 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.balar.animeyounet.activity.DetailSeries;
 import com.balar.animeyounet.entity.AnimeItem;
+import com.balar.animeyounet.entity.SeriesItem;
 import com.balar.animeyounet.listener.CustomOnItemClickListener;
 import com.balar.animeyounet.R;
 import com.balar.animeyounet.activity.DetailAnime;
 import com.balar.animeyounet.entity.Anime;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
 public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> {
+//    private ArrayList<SeriesItem> animeItemList;
     private ArrayList<AnimeItem> animeItemList;
     private Context context;
+
 
     public AnimeAdapter(ArrayList<AnimeItem> animeItems, Context context){
         this.animeItemList = animeItems;
@@ -34,7 +49,8 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item, viewGroup, false);
+                .inflate(R.layout.list_home_item, viewGroup, false);
+
         ButterKnife.bind(this, view);
         return new ViewHolder(view);
     }
@@ -54,19 +70,24 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
                 .into(viewHolder.imgAnime);
         viewHolder.tvTanggal.setText(anime.getTanggal());
 
+        viewHolder.tvJudul_series.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
+            Intent intent = new Intent(context, DetailSeries.class);
+            intent.putExtra("detail_series", anime.getId());
+            context.startActivity(intent);
+        }));
+
         viewHolder.tvJudul.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
             Intent intent = new Intent(context, DetailAnime.class);
-            Anime anime1 = new Anime(anime.getJudul(),
+            Anime anime1 = new Anime(anime.getId(),
+                    anime.getJudul(),
                     anime.getGambar(),
                     anime.getTanggal(),
-                    anime.getGenre(),
                     anime.getVideo(),
                     anime.getVideo1(),
                     anime.getVideo2(),
                     anime.getJudul_series(),
                     anime.getGambar_series(),
-                    anime.getUrl(),
-                    anime.getHalaman()
+                    anime.getUrl()
             );
             intent.putExtra("detail", anime1);
             context.startActivity(intent);
@@ -74,17 +95,16 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
 
         viewHolder.imgAnime.setOnClickListener(new CustomOnItemClickListener(i, (view, position) -> {
             Intent intent = new Intent(context, DetailAnime.class);
-            Anime anime12 = new Anime(anime.getJudul(),
+            Anime anime12 = new Anime(anime.getId(),
+                    anime.getJudul(),
                     anime.getGambar(),
                     anime.getTanggal(),
-                    anime.getGenre(),
                     anime.getVideo(),
                     anime.getVideo1(),
                     anime.getVideo2(),
                     anime.getJudul_series(),
                     anime.getGambar_series(),
-                    anime.getUrl(),
-                    anime.getHalaman()
+                    anime.getUrl()
             );
             intent.putExtra("detail", anime12);
             context.startActivity(intent);
@@ -115,8 +135,8 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
 
             tvJudul = itemView.findViewById(R.id.tvJudul);
             tvTanggal = itemView.findViewById(R.id.tvTanggal);
-            tvJudul_series = itemView.findViewById(R.id.tvJudul_series);
             imgAnime = itemView.findViewById(R.id.Gambar);
+            tvJudul_series = itemView.findViewById(R.id.tvJudul_series);
             Gambar_series = itemView.findViewById(R.id.Gambar_series);
             btn_share = itemView.findViewById(R.id.btn_share);
         }
